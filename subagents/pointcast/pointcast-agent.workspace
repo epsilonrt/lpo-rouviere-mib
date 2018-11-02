@@ -7,7 +7,7 @@
       <Project Name="pointcast-agent" ConfigName="Debug"/>
       <Project Name="pointcast-agent" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
       <Project Name="pointcast-agent" ConfigName="Release"/>
       <Project Name="pointcast-agent" ConfigName="Release"/>

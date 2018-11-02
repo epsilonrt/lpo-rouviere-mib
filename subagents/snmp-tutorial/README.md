@@ -53,13 +53,17 @@ Verify with :
 				 |
 				 +--lprMIBConformance(2)
 
-## Build `piduino-agent` with `net-snmp-config`
+## Build piduino-agent with `net-snmp-config`
+
+You need to install the 
+[piduino](https://github.com/epsilonrt/piduino/wiki/Install-and-configure) 
+library then you can build with :
 
 		$ net-snmp-config --compile-subagent --cflags "$(pkg-config --cflags piduino)" --ldflags "$(pkg-config --libs piduino)" piduino-agent lprSnmpTutorial.c
 
 You can also compile with codelite !
 
-## Test `piduino-agent`
+## Test piduino-agent
 
 		$ sudo ./piduino-agent -f -Lo -DlprSnmpTutorial -x  tcp:localhost:705
 
@@ -69,31 +73,31 @@ if you have compiled with codelite, the command is:
 
 * Reads leds
 
-    $ snmpwalk -v1 -cepsilonrt localhost LPO-ROUVIERE-MIB::lprSnmpTutorialLeds
-      LPO-ROUVIERE-MIB::led1.0 = INTEGER: 0
-      LPO-ROUVIERE-MIB::led2.0 = INTEGER: 0
-      LPO-ROUVIERE-MIB::led3.0 = INTEGER: 0
+      $ snmpwalk -v1 -cepsilonrt localhost LPO-ROUVIERE-MIB::lprSnmpTutorialLeds
+        LPO-ROUVIERE-MIB::led1.0 = INTEGER: 0
+        LPO-ROUVIERE-MIB::led2.0 = INTEGER: 0
+        LPO-ROUVIERE-MIB::led3.0 = INTEGER: 0
 
 * Reads buttons
 
-    $ snmpwalk -v1 -cepsilonrt localhost LPO-ROUVIERE-MIB::lprSnmpTutorialButtons
-      LPO-ROUVIERE-MIB::led1.0 = INTEGER: 0
-      LPO-ROUVIERE-MIB::led2.0 = INTEGER: 0
-      LPO-ROUVIERE-MIB::led3.0 = INTEGER: 0
+      $ snmpwalk -v1 -cepsilonrt localhost LPO-ROUVIERE-MIB::lprSnmpTutorialButtons
+        LPO-ROUVIERE-MIB::led1.0 = INTEGER: 0
+        LPO-ROUVIERE-MIB::led2.0 = INTEGER: 0
+        LPO-ROUVIERE-MIB::led3.0 = INTEGER: 0
 
 
 * Set led1
 
-    $ snmpset -v1 -cepsilonrt localhost LPO-ROUVIERE-MIB::led1.0 i 1
-      LPO-ROUVIERE-MIB::led1.0 = INTEGER: 1
+      $ snmpset -v1 -cepsilonrt localhost LPO-ROUVIERE-MIB::led1.0 i 1
+        LPO-ROUVIERE-MIB::led1.0 = INTEGER: 1
 
 * Clear led1
 
-    $ snmpset -v1 -cepsilonrt localhost LPO-ROUVIERE-MIB::led1.0 i 0
-      LPO-ROUVIERE-MIB::led1.0 = INTEGER: 0
+      $ snmpset -v1 -cepsilonrt localhost LPO-ROUVIERE-MIB::led1.0 i 0
+        LPO-ROUVIERE-MIB::led1.0 = INTEGER: 0
 
 * remote access
 
-    $ snmpwalk -v1 -cepsilonrt n12 LPO-ROUVIERE-MIB::lprSnmpTutorialButtons
-    $ snmpset -v1 -cepsilonrt n12 LPO-ROUVIERE-MIB::led1.0 i 1
-    $ snmpset -v1 -cepsilonrt n12 LPO-ROUVIERE-MIB::led1.0 i 0
+      $ snmpwalk -v1 -cepsilonrt n12 LPO-ROUVIERE-MIB::lprSnmpTutorialButtons
+      $ snmpset -v1 -cepsilonrt n12 LPO-ROUVIERE-MIB::led1.0 i 1
+      $ snmpset -v1 -cepsilonrt n12 LPO-ROUVIERE-MIB::led1.0 i 0
