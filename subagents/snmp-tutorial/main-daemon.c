@@ -2,7 +2,7 @@
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
 #include <signal.h>
-#include "lprPointCast.h"
+#include "lprSnmpTutorial.h"
 
 void init_usmUser (void);
 void init_vacm_vars (void);
@@ -45,13 +45,12 @@ main (int argc, char **argv) {
   SOCK_STARTUP;
 
   /* initialize the agent library */
-  init_agent ("pointcast-agent");
+  init_agent ("piduino-agent");
 
   /* initialize mib code here */
-  if (init_lprPointCast(! background) != SNMP_ERR_NOERROR) {
-    
-    exit(EXIT_FAILURE);
-  }
+
+  /* mib code: init_nstAgentSubagentObject from nstAgentSubagentObject.C */
+  init_lprSnmpTutorial();
 
   /* initialize vacm/usm access control  */
   if (!agentx_subagent) {
@@ -59,8 +58,8 @@ main (int argc, char **argv) {
     init_usmUser();
   }
 
-  /* pointcast-agent will be used to read pointcast-agent.conf files. */
-  init_snmp ("pointcast-agent");
+  /* piduino-agent will be used to read piduino-agent.conf files. */
+  init_snmp ("piduino-agent");
 
   /* If we're going to be a snmp master agent, initial the ports */
   if (!agentx_subagent) {
@@ -72,18 +71,17 @@ main (int argc, char **argv) {
   signal (SIGTERM, stop_server);
   signal (SIGINT, stop_server);
 
-  snmp_log (LOG_INFO, "pointcast-agent is up and running.\n");
+  snmp_log (LOG_INFO, "piduino-agent is up and running.\n");
 
   /* your main loop here... */
   while (keep_running) {
     /* if you use select(), see snmp_select_info() in snmp_api(3) */
     /*     --- OR ---  */
-    agent_check_and_process (0); /* 0 == don't block */
-    poll_lprPointCast();
+    agent_check_and_process (1); /* 0 == don't block */
   }
 
   /* at shutdown time */
-  snmp_shutdown ("pointcast-agent");
+  snmp_shutdown ("piduino-agent");
   SOCK_CLEANUP;
 
   return 0;
