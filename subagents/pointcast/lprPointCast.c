@@ -12,13 +12,17 @@
 
 #define MB_CTOR_COILS 3
 
+#ifndef RS485_RTS_LOW
+#define RS485_RTS_LOW 0
+#endif
+
 // Modbus Config
 static double mbTimeout = 1.0;
 static int mbCtorSlave = 8;
 static unsigned long mbPollDelay = 5000;
 
 // RTU
-static char mbRtuPort[] = "/dev/ttyUSB0";
+static char mbRtuPort[] = "/dev/ttyS1";
 static int mbRtuBaud = 19200;
 static char mbRtuParity = 'E';
 static int mbRtuDatabit = 8;
@@ -72,13 +76,21 @@ init_lprPointCast (int debug) {
   sec = (uint32_t) mbTimeout;
   usec = (uint32_t) ( (mbTimeout - sec) * 1E6);
   modbus_set_response_timeout (mb, sec, usec);
+#if RS485_RTS_LOW
+  modbus_rtu_set_serial_mode (mb, MODBUS_RTU_RS485);
+  modbus_rtu_set_rts (mb, MODBUS_RTU_RTS_DOWN);
+#endif
 #else
   struct timeval response_timeout;
   response_timeout.tv_sec = (time_t) mbTimeout;
   response_timeout.tv_usec = (time_t) ( (mbTimeout - response_timeout.tv_sec) * 1E6);
   modbus_set_response_timeout (mb, &response_timeout);
+#if RS485_RTS_LOW
+#error "libmodbus version < 3.1 doesn't support MODBUS_RTU_RS485 with RTS"
 #endif
 #endif
+#endif
+
 
   modbus_set_slave (mb, mbCtorSlave);
 

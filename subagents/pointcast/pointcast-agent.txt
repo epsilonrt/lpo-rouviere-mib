@@ -1,0 +1,1 @@
+./Release/lprPointCast.c.o ./Release/main-daemon.c.o
